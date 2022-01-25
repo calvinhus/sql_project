@@ -1,7 +1,7 @@
 import requests
-from pandas.io.json import json_normalize
 import pandas as pd
 import re
+
 schools = {
     'ironhack': 10828,
     'app-academy': 10525,
@@ -51,7 +51,7 @@ def get_school_info(school, school_id):
     courses_df = pd.DataFrame(courses, columns=['courses'])
 
     locations = data['content']['locations']
-    locations_df = json_normalize(locations)
+    locations_df = pd.json_normalize(locations)
 
     badges_df = pd.DataFrame(data['content']['meritBadges'])
 
