@@ -1,3 +1,4 @@
+# Import libraries
 import requests
 import pandas as pd
 import re
@@ -9,11 +10,17 @@ conn = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                              pw="calvinhus.SQL",
                              db="datalake"))
 
+# Variable declaration
 schools = {
     'ironhack': 10828,
     'app-academy': 10525,
     'springboard': 11035
 }
+
+locations_list = []
+courses_list = []
+badges_list = []
+schools_list = []
 
 
 def get_comments_school(school):
@@ -71,11 +78,6 @@ def get_school_info(school, school_id):
     return locations_df, courses_df, badges_df, school_df
 
 
-locations_list = []
-courses_list = []
-badges_list = []
-schools_list = []
-
 for school, id in schools.items():
     a, b, c, d = get_school_info(school, id)
 
@@ -94,13 +96,9 @@ courses = pd.concat(courses_list)
 badges = pd.concat(badges_list)
 schools = pd.concat(schools_list)
 
-#comments.to_sql('comments', con=conn, if_exists='replace', chunksize=1000)
-#locations.to_sql('locations', con=conn, if_exists='replace', chunksize=1000)
-#courses.to_sql('courses', con=conn, if_exists='replace', chunksize=1000)
-#badges.to_sql('badges', con=conn, if_exists='replace', chunksize=1000)
-#schools.to_sql('schools', con=conn, if_exists='replace', chunksize=1000)
-
-# Commit the transaction
-# conn.commit()
-# Close connection
-# conn.close()
+# Create tables and populate them with data from the corresponding dataframe
+comments.to_sql('comments', con=conn, if_exists='replace', chunksize=1000)
+locations.to_sql('locations', con=conn, if_exists='replace', chunksize=1000)
+courses.to_sql('courses', con=conn, if_exists='replace', chunksize=1000)
+badges.to_sql('badges', con=conn, if_exists='replace', chunksize=1000)
+schools.to_sql('schools', con=conn, if_exists='replace', chunksize=1000)
