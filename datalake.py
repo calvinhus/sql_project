@@ -1,6 +1,13 @@
 import requests
 import pandas as pd
 import re
+from sqlalchemy import create_engine
+
+# Create a connection to the database
+conn = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
+                     .format(user="root",
+                             pw="calvinhus.SQL",
+                             db="datalake"))
 
 schools = {
     'ironhack': 10828,
@@ -26,16 +33,6 @@ def get_comments_school(school):
     reviews['review_body'] = reviews['body'].apply(remove_tags)
     reviews['school'] = school
     return reviews
-
-
-# could you write this as a list comprehension? ;)
-comments = []
-
-for school in schools.keys():
-    print(school)
-    comments.append(get_comments_school(school))
-
-comments = pd.concat(comments)
 
 
 def get_school_info(school, school_id):
@@ -80,7 +77,6 @@ badges_list = []
 schools_list = []
 
 for school, id in schools.items():
-    print(school)
     a, b, c, d = get_school_info(school, id)
 
     locations_list.append(a)
@@ -88,7 +84,23 @@ for school, id in schools.items():
     badges_list.append(c)
     schools_list.append(d)
 
+# could you write this as a list comprehension? ;)
+# YES WE CAN!
+comments = [get_comments_school(school) for school in schools.keys()]
+
+comments = pd.concat(comments)
 locations = pd.concat(locations_list)
 courses = pd.concat(courses_list)
 badges = pd.concat(badges_list)
 schools = pd.concat(schools_list)
+
+#comments.to_sql('comments', con=conn, if_exists='replace', chunksize=1000)
+#locations.to_sql('locations', con=conn, if_exists='replace', chunksize=1000)
+#courses.to_sql('courses', con=conn, if_exists='replace', chunksize=1000)
+#badges.to_sql('badges', con=conn, if_exists='replace', chunksize=1000)
+#schools.to_sql('schools', con=conn, if_exists='replace', chunksize=1000)
+
+# Commit the transaction
+# conn.commit()
+# Close connection
+# conn.close()
