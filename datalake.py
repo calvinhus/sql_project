@@ -102,3 +102,8 @@ locations.to_sql('locations', con=conn, if_exists='replace', chunksize=1000)
 courses.to_sql('courses', con=conn, if_exists='replace', chunksize=1000)
 badges.to_sql('badges', con=conn, if_exists='replace', chunksize=1000)
 schools.to_sql('schools', con=conn, if_exists='replace', chunksize=1000)
+
+comments2 = comments.copy()
+comments2.fillna(0)
+comments2.drop(['user', 'body', 'rawBody', 'comments'], inplace=True, axis=1)
+comments2.to_sql('comments2', con=conn, if_exists='replace', chunksize=1000)
