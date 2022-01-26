@@ -113,3 +113,5 @@ school = pd.concat(school_list)
 
 # Call function to populate tables in datalake database
 create_datalake()
+
+print("Datalake created! Time to clean it (:")
