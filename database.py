@@ -29,14 +29,19 @@ def db_structure():
 
     badges_table = """CREATE TABLE IF NOT EXISTS ironhack_db.badges
                         (
-                            field1 INT
+                            index INT NOT NULL PRIMARY KEY,
+                            name VARCHAR(30),
+                            keyword VARCHAR(30),
+                            description VARCHAR(250),
+                            school VARCHAR(10),
+                            school_id SMALLINT
                         );    
                 """
     c.execute(badges_table)
 
     courses_table = """CREATE TABLE IF NOT EXISTS ironhack_db.courses
                         (
-                            index INT NOT NULL,
+                            index INT NOT NULL PRIMARY KEY,
                             courses VARCHAR(50),
                             school VARCHAR(10),
                             school_id SMALLINT
@@ -46,21 +51,46 @@ def db_structure():
 
     locations_table = """CREATE TABLE IF NOT EXISTS ironhack_db.locations
                         (
-                            field1 INT
+                            index INT NOT NULL PRIMARY KEY,
+                            id INT,
+                            description VARCHAR(30)
+                            country_id INT,
+                            country_name VARCHAR(30)
+                            country_code VARCHAR(2),
+                            city_id INT,
+                            city_name VARCHAR(20),
+                            school VARCHAR(10),
+                            school_id SMALLINT
                         );    
                 """
     c.execute(locations_table)
 
     school_table = """CREATE TABLE IF NOT EXISTS ironhack_db.school
                         (
-                            field1 INT
+                            index INT NOT NULL PRIMARY KEY,
+                            website VARCHAR(30),
+                            description VARCHAR(300),
+                            school VARCHAR(10),
+                            school_id SMALLINT
                         );    
                 """
     c.execute(school_table)
 
     comments_table = """CREATE TABLE IF NOT EXISTS ironhack_db.comments
                         (
-                            field1 INT
+                            index INT PRIMARY KEY,
+                            name VARCHAR(100),
+                            anonymous BIT(1),
+                            is_alumni BIT(1),
+                            program VARCHAR(50),
+                            duration VARCHAR(3),
+                            grad_year DATE,
+                            job_title VARCHAR(50),
+                            review TEXT,
+                            overall FLOAT,
+                            curriculum FLOAT,
+                            job_support FLOAT,
+                            avg_rating FLOAT AS ((overall + curriculum + job_support) / 3)
                         );    
                 """
     c.execute(comments_table)

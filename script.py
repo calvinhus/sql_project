@@ -10,5 +10,5 @@ comments_values = ""
 db.db_structure()
 
 # Insert in the newly created tables
-db.db_insert(badges_values, courses_values, locations_values,
-             school_values, comments_values)
+# db.db_insert(badges_values, courses_values, locations_values,
+#             school_values, comments_values)
