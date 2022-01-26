@@ -3,24 +3,23 @@ import requests
 import pandas as pd
 import re
 from sqlalchemy import create_engine
+import os
+
+# Fetch mySQL password from env variable
+sql_pass = os.environ["MYSQL_PASSWORD"]
 
 # Create a connection to the database
 conn = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                      .format(user="root",
-                             pw="calvinhus.SQL",
+                             pw=sql_pass,
                              db="datalake"))
 
 # Variable declaration
-schools = {
-    'ironhack': 10828,
-    'app-academy': 10525,
-    'springboard': 11035
-}
-
+school_dict = {'ironhack': 10828}
 locations_list = []
 courses_list = []
 badges_list = []
-schools_list = []
+school_list = []
 
 
 def get_comments_school(school):
@@ -78,32 +77,39 @@ def get_school_info(school, school_id):
     return locations_df, courses_df, badges_df, school_df
 
 
-for school, id in schools.items():
+def create_datalake():
+    """Create tables and populate them with data from the corresponding dataframe"""
+    # comments.fillna(0)
+    # Drop tables to be able to insert data
+    comments.drop(['user', 'body', 'rawBody', 'comments'],
+                  inplace=True, axis=1)
+    comments.to_sql('comments', con=conn,
+                    if_exists='replace', chunksize=1000)
+
+    locations.to_sql('locations', con=conn,
+                     if_exists='replace', chunksize=1000)
+    courses.to_sql('courses', con=conn, if_exists='replace', chunksize=1000)
+    badges.to_sql('badges', con=conn, if_exists='replace', chunksize=1000)
+    school.to_sql('school', con=conn, if_exists='replace', chunksize=1000)
+
+
+for school, id in school_dict.items():
     a, b, c, d = get_school_info(school, id)
 
     locations_list.append(a)
     courses_list.append(b)
     badges_list.append(c)
-    schools_list.append(d)
+    school_list.append(d)
 
 # could you write this as a list comprehension? ;)
 # YES WE CAN!
-comments = [get_comments_school(school) for school in schools.keys()]
+comments_list = [get_comments_school(s) for s in school_dict.keys()]
 
-comments = pd.concat(comments)
+comments = pd.concat(comments_list)
 locations = pd.concat(locations_list)
 courses = pd.concat(courses_list)
 badges = pd.concat(badges_list)
-schools = pd.concat(schools_list)
+school = pd.concat(school_list)
 
-# Create tables and populate them with data from the corresponding dataframe
-comments.to_sql('comments', con=conn, if_exists='replace', chunksize=1000)
-locations.to_sql('locations', con=conn, if_exists='replace', chunksize=1000)
-courses.to_sql('courses', con=conn, if_exists='replace', chunksize=1000)
-badges.to_sql('badges', con=conn, if_exists='replace', chunksize=1000)
-schools.to_sql('schools', con=conn, if_exists='replace', chunksize=1000)
-
-comments2 = comments.copy()
-comments2.fillna(0)
-comments2.drop(['user', 'body', 'rawBody', 'comments'], inplace=True, axis=1)
-comments2.to_sql('comments2', con=conn, if_exists='replace', chunksize=1000)
+# Call function to populate tables in datalake database
+create_datalake()
