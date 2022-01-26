@@ -3,11 +3,15 @@ import requests
 import pandas as pd
 import re
 from sqlalchemy import create_engine
-# Some test comment
+import os
+
+
 # Create a connection to the database
+sql_pass = os.environ["MYSQL_PASSWORD"]
+
 conn = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                      .format(user="root",
-                             pw="calvinhus.SQL",
+                             pw=sql_pass,
                              db="datalake"))
 
 # Variable declaration
