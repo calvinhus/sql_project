@@ -94,7 +94,17 @@ comments2['Work_inField']=comments2['jobTitle'].apply(jobTitle_UXUI_clean)
 
 #WEBDEV
 
-#web ft 6000
+jobTitle_WD =['Senior Associate', 'unemployed', 'Botcave', 'Finance Analyst', 'Program Manager', 'Estudiante', 'Therapist', 'Student', 'student',
+'Partner @Orion', 'Founder', 'Student', 'COO at Tender.co', 'Entrepreneur']
+def jobTitle_WD_clean(row):
+    for element in jobTitle_WD:
+        if element in row:
+            return 0
+        else:
+            return 1
+
+comments2['Work_inField']=comments2['jobTitle'].apply(jobTitle_WD_clean)
+
 
 #nivel satisfacao curriculum
 #perfil das pessoas que fazem mais reviews (nivel de review/curso)
@@ -103,16 +113,14 @@ comments2['Work_inField']=comments2['jobTitle'].apply(jobTitle_UXUI_clean)
 
 #CYBERSEC
 
-#calendar=['janeiro', 'fevereiro', "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+def jobTitle_CS_clean(row):
+    jobTitle_CS =['analyst']
+    for element in jobTitle_CS:
+        if (element in row):
+            return 1
+        else:
+            return 0
 
-#def month(row):
-#    for element in calendar:
-#        if element in row:
-#            return calendar.index(element)+1
-
-#df1["Month"] = df1["DIM CALENDAR.DATE.1"].apply(month)
+comments2['Work_inField']=comments2['jobTitle'].apply(jobTitle_CS_clean)
 
 
-
-
-#comments2[(comments2['school']=='ironhack')&((comments2['program']=='UX/UI Design Bootcamp')|(comments2['program']=='UX/UI Design Part-Time')))]['jobTitle'].unique()
