@@ -103,46 +103,43 @@ def db_insert(comments_values):
 
     c.execute("USE ironhack_db;")
 
-    # # Table: badges
-    # insert_query = """DELETE FROM badges;
-    #                     INSERT INTO badges (index, name, keyword, description, school, school_id )
-    #                     VALUES (%s, %s, %s, %s, %s, %s);
-    #             """
-    # badges_values = (10, 20, 30)
-    # c.execute(insert_query, badges_values)
+    # Table: badges
+    insert_query = """DELETE FROM badges;
+                        INSERT INTO badges (index, name, keyword, description, school, school_id )
+                        VALUES (%s, %s, %s, %s, %s, %s);
+                """
+    badges_values = (10, 20, 30)
+    c.executemany(insert_query, badges_values)
 
-    # # Table: courses
-    # insert_query = """DELETE FROM courses;
-    #                     INSERT INTO courses (index, courses, school, school_id)
-    #                     VALUES (%s, %s, %s, %s);
-    #             """
-    # courses_values = (10, 20, 30)
-    # c.execute(insert_query, courses_values)
+    # Table: courses
+    insert_query = """DELETE FROM courses;
+                        INSERT INTO courses (index, courses, school, school_id)
+                        VALUES (%s, %s, %s, %s);
+                """
+    courses_values = (10, 20, 30)
+    c.executemany(insert_query, courses_values)
 
-    # # Table: locations
-    # insert_query = """DELETE FROM locations;
-    #                     INSERT INTO locations (index, id, description, country_id, country_name, country_code, city_id, city_name, school, school_id)
-    #                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-    #             """
-    # locations_values = (10, 20, 30)
-    # c.execute(insert_query, locations_values)
+    # Table: locations
+    insert_query = """DELETE FROM locations;
+                        INSERT INTO locations (index, id, description, country_id, country_name, country_code, city_id, city_name, school, school_id)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """
+    locations_values = (10, 20, 30)
+    c.executemany(insert_query, locations_values)
 
-    # # Table: school
-    # insert_query = """DELETE FROM school;
-    #                     INSERT INTO school (index, website, description, school, school_id)
-    #                     VALUES (%s, %s, %s, %s, %s);
-    #             """
-    # school_values = (10, 20, 30)
-    # c.execute(insert_query, school_values)
-# -- , anonymous, is_alumni, program, duration, grad_year, job_title , Work_inField, review, overall, curriculum, job_support, avg_rating)
-# -- , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    # Table: school
+    insert_query = """DELETE FROM school;
+                        INSERT INTO school (index, website, description, school, school_id)
+                        VALUES (%s, %s, %s, %s, %s);
+                """
+    school_values = (10, 20, 30)
+    c.executemany(insert_query, school_values)
+
     # Table: comments
     insert_query = """DELETE FROM comments;
                         INSERT INTO ironhack_db.comments (`index`, `name`) 
                         VALUES (%s, %s); 
                 """
-    #comments_values = (10, 20, 30)
-    #c.execute(insert_query, comments_values)
     c.executemany(insert_query, comments_values)
 
     # Commit the transaction

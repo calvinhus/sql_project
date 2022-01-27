@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 # Import our modules
 import database as db
 import datacleaning as dc
-
+import queries as q
 # Variable declaration
 badges_values = []
 courses_values = []
@@ -84,26 +84,29 @@ try:
     comments_df['Work_inField'] = comments_df['jobTitle'].apply(
         dc.jobTitle_CS_clean)
 
+    comments_df['overallScore'] = comments_df['overallScore'].astype(float)
+    labels = ['E', 'D', 'C', 'B', 'A']
+    comments_df["Ranking"] = pd.cut(
+        comments_df['overallScore'], 5, labels=labels)
+
     # Call method to create database and all tables
     db.db_structure(conn)
-    print("\nDatabase and tables created.\n")
+    #print("\nDatabase and tables created.\n")
     c.close()
     conn.close()
 
-    # row['queryDate']), type(row['program']), type(row['overallScore']), type(row['overall']), type(row['curriculum']), type(row['jobSupport']), type(row['review_body']), type(row['school']), type(row['price']), type(row['duration']), type(row['Work_inField']))
+    conn2 = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
+                          .format(user="root",
+                                  pw=sql_pass,
+                                  db="ironhack_db"))
 
-    def insert_func(df):
-        global sql_pass
-        conn2 = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
-                              .format(user="root",
-                                      pw=sql_pass,
-                                      db="ironhack_db"))
-
-        comments_df.to_sql('commentsnewtable', con=conn2,
-                           if_exists='replace', chunksize=1000)
+    comments_df.to_sql('comments', con=conn2,
+                       if_exists='replace', chunksize=1000)
 
     print("\nDatabase tables updated.\n")
-    insert_func(comments_df)
+
+    # Queries
+    print(comments_df.groupby(['duration']).agg({'Ranking': 'nunique'}).head())
 
 except mysql.connector.Error as err:
     print(f"\nSorry. Smething went wrong :(\n{format(err)}\n")
