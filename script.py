@@ -1,7 +1,9 @@
 import os
 import pandas as pd
 import mysql.connector
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 # Import our modules
 import database as db
 import datacleaning as dc
@@ -12,6 +14,8 @@ courses_values = []
 locations_values = []
 school_values = []
 comments_values = []
+
+plt.close("all")
 
 # Fetch mySQL password from env variable
 sql_pass = os.environ["MYSQL_PASSWORD"]
@@ -91,7 +95,7 @@ try:
 
     # Call method to create database and all tables
     db.db_structure(conn)
-    #print("\nDatabase and tables created.\n")
+    # print("\nDatabase and tables created.\n")
     c.close()
     conn.close()
 
@@ -106,7 +110,64 @@ try:
     print("\nDatabase tables updated.\n")
 
     # Queries
-    print(comments_df.groupby(['duration']).agg({'Ranking': 'nunique'}).head())
+    curriculum_time = conn2.execute(text(q.curriculum_time))
+    curriculum_time_df = pd.DataFrame(curriculum_time)
+
+    job_support_time = conn2.execute(text(q.job_support_time))
+    job_support_time_df = pd.DataFrame(job_support_time)
+
+    overall_score_time = conn2.execute(text(q.overall_score_time))
+    overall_score_time_df = pd.DataFrame(overall_score_time)
+
+    part_time_score = conn2.execute(text(q.part_time_score))
+    part_time_score_df = pd.DataFrame(part_time_score)
+
+    full_time_score = conn2.execute(text(q.full_time_score))
+    full_time_score_df = pd.DataFrame(full_time_score)
+
+    profile_by_program = conn2.execute(text(q.profile_by_program))
+    profile_by_program_df = pd.DataFrame(profile_by_program)
+
+    profile_by_alumni = conn2.execute(text(q.profile_by_alumni))
+    profile_by_alumni_df = pd.DataFrame(profile_by_alumni)
+
+    profile_by_workInField = conn2.execute(text(q.profile_by_workInField))
+    profile_by_workInField_df = pd.DataFrame(profile_by_workInField)
+
+    overall_student_rate = conn2.execute(text(q.overall_student_rate))
+    overall_student_rate_df = pd.DataFrame(overall_student_rate)
+
+    curriculum_student_rate = conn2.execute(text(q.curriculum_student_rate))
+    curriculum_student_rate_df = pd.DataFrame(curriculum_student_rate)
+
+    jobSupport_student_rate = conn2.execute(text(q.jobSupport_student_rate))
+    jobSupport_student_rate_df = pd.DataFrame(jobSupport_student_rate)
+    # Queries done
+
+    print(curriculum_time_df.head())
+    print(job_support_time_df.head())
+    print(overall_score_time_df.head())
+    # average overall score by part time course
+    print(part_time_score_df.head())
+    # average overall score by part time course
+    print(full_time_score_df.head())
+    print(profile_by_program_df.head())
+    print(profile_by_alumni_df.head())
+    print(profile_by_workInField_df.head())
+    print(overall_student_rate_df.head())
+    print(curriculum_student_rate_df.head())
+    print(jobSupport_student_rate_df.head())
+
+    # create a PdfPages object
+    # f1 = plt.figure()
+    # pdf = PdfPages('report.pdf')
+    # f1 = plt.figure()
+    # curriculum_time_df.plot(kind='bar', x='graduatingYear',
+    #                        y = 'AVG(curriculum)', legend = False)
+    # pdf.savefig(f1)
+
+    # plt.close("all")
+    # pdf.close()
 
 except mysql.connector.Error as err:
     print(f"\nSorry. Smething went wrong :(\n{format(err)}\n")
