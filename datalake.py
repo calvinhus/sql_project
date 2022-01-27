@@ -79,7 +79,11 @@ def get_school_info(school, school_id):
 
 def create_datalake():
     """Create tables and populate them with data from the corresponding dataframe"""
-    # comments.fillna(0)
+
+    # Create cursor and datalake db
+    #cur = conn.cursor()
+    #cur.execute("CREATE DATABASE datalake;")
+    #cur.execute("USE datalake;")
     # Drop tables to be able to insert data
     comments.drop(['user', 'body', 'rawBody', 'comments'],
                   inplace=True, axis=1)
@@ -113,5 +117,5 @@ school = pd.concat(school_list)
 
 # Call function to populate tables in datalake database
 create_datalake()
-
 print("Datalake created! Time to clean it (:")
+#######################################################################################################################
