@@ -78,6 +78,7 @@ def db_structure(connection):
                             `duration` VARCHAR(3),
                             `grad_year` DATE,
                             `job_title` VARCHAR(50),
+                            `Work_inField` BIT(1),
                             `review` TEXT,
                             `overall` FLOAT,
                             `curriculum` FLOAT,
@@ -92,7 +93,7 @@ def db_structure(connection):
     connection.close()
 
 
-def db_insert(badges_values, courses_values, locations_values, school_values, comments_values):
+def db_insert(comments_values):
     """This method inserts the cleaned data from the datalake database into ironhack_db"""
     connection = mysql.connector.connect(user='root', password=sql_pass,
                                          host='127.0.0.1',
@@ -102,45 +103,47 @@ def db_insert(badges_values, courses_values, locations_values, school_values, co
 
     c.execute("USE ironhack_db;")
 
-    # Table: badges
-    insert_query = """DELETE FROM badges_table;
-                        INSERT INTO badges_table ()
-                        VALUES (%s, %s, %s, %s, %s, %s);
-                """
-    badges_values = (10, 20, 30)
-    c.execute(insert_query, badges_values)
+    # # Table: badges
+    # insert_query = """DELETE FROM badges;
+    #                     INSERT INTO badges (index, name, keyword, description, school, school_id )
+    #                     VALUES (%s, %s, %s, %s, %s, %s);
+    #             """
+    # badges_values = (10, 20, 30)
+    # c.execute(insert_query, badges_values)
 
-    # Table: courses
-    insert_query = """DELETE FROM courses_table;
-                        INSERT INTO courses_table ()
-                        VALUES (%s, %s, %s, %s);
-                """
-    courses_values = (10, 20, 30)
-    c.execute(insert_query, courses_values)
+    # # Table: courses
+    # insert_query = """DELETE FROM courses;
+    #                     INSERT INTO courses (index, courses, school, school_id)
+    #                     VALUES (%s, %s, %s, %s);
+    #             """
+    # courses_values = (10, 20, 30)
+    # c.execute(insert_query, courses_values)
 
-    # Table: locations
-    insert_query = """DELETE FROM locations_table;
-                        INSERT INTO locations_table ()
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-                """
-    locations_values = (10, 20, 30)
-    c.execute(insert_query, locations_values)
+    # # Table: locations
+    # insert_query = """DELETE FROM locations;
+    #                     INSERT INTO locations (index, id, description, country_id, country_name, country_code, city_id, city_name, school, school_id)
+    #                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    #             """
+    # locations_values = (10, 20, 30)
+    # c.execute(insert_query, locations_values)
 
-    # Table: school
-    insert_query = """DELETE FROM school_table;
-                        INSERT INTO school_table ()
-                        VALUES (%s, %s, %s, %s, %s);
-                """
-    school_values = (10, 20, 30)
-    c.execute(insert_query, school_values)
-
+    # # Table: school
+    # insert_query = """DELETE FROM school;
+    #                     INSERT INTO school (index, website, description, school, school_id)
+    #                     VALUES (%s, %s, %s, %s, %s);
+    #             """
+    # school_values = (10, 20, 30)
+    # c.execute(insert_query, school_values)
+# -- , anonymous, is_alumni, program, duration, grad_year, job_title , Work_inField, review, overall, curriculum, job_support, avg_rating)
+# -- , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
     # Table: comments
-    insert_query = """DELETE FROM comments_table;
-                        INSERT INTO comments_table ()
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    insert_query = """DELETE FROM comments;
+                        INSERT INTO ironhack_db.comments (`index`, `name`) 
+                        VALUES (%s, %s); 
                 """
-    comments_values = (10, 20, 30)
-    c.execute(insert_query, comments_values)
+    #comments_values = (10, 20, 30)
+    #c.execute(insert_query, comments_values)
+    c.executemany(insert_query, comments_values)
 
     # Commit the transaction
     connection.commit()
