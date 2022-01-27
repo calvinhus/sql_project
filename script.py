@@ -67,6 +67,11 @@ try:
         dc.jobTitle_DA_clean)
     comments_df['Work_inField'] = comments_df['jobTitle'].apply(
         dc.jobTitle_UXUI_clean)
+    comments_df['Work_inField'] = comments_df['jobTitle'].apply(
+        dc.jobTitle_WD_clean)
+
+    comments_df['Work_inField'] = comments_df['jobTitle'].apply(
+        dc.jobTitle_CS_clean)
 
     # Call method to create database and all tables
     db.db_structure(conn)

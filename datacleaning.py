@@ -1,6 +1,6 @@
 
 def program_clean(row):
-    """This method normalizes every row of the cohort name."""
+    """This method normalizes every row of the cohort name"""
     if (row['program'] == 'Full-time UX/UI Design Bootcamp') | (row['program'] == 'Web Design'):
         return 'UX/UI Design Bootcamp'
     elif (row['program'] == 'Part-time UX/UI Design') | (row['program'] == 'Part-time UX/UI Design '):
@@ -60,7 +60,7 @@ def duration_program(row):
 
 
 def jobTitle_DA_clean(row):
-    """This method normalizes the job title for Data Analytics"""
+    """This method normalizes the job title for Data Analytics cohort"""
     jobTitle_DA = ['Data', 'dados', 'analyst',
                    'Software', 'Manager', 'Junior', 'Innovation']
     for element in jobTitle_DA:
@@ -71,7 +71,7 @@ def jobTitle_DA_clean(row):
 
 
 def jobTitle_UXUI_clean(row):
-    """This method normalizes the job title for UX/UI"""
+    """This method normalizes the job title for UX/UI cohort"""
     jobTitle_UXUI = ['Student', 'student', 'Unemployed', 'Leemur', 'Owner']
     for element in jobTitle_UXUI:
         if element in row:
@@ -79,25 +79,24 @@ def jobTitle_UXUI_clean(row):
         else:
             return 1
 
-# WEBDEV
 
-# web ft 6000
+def jobTitle_WD_clean(row):
+    """This method normalizes the job title for WebDev cohort"""
+    jobTitle_WD = ['Senior Associate', 'unemployed', 'Botcave', 'Finance Analyst', 'Program Manager', 'Estudiante', 'Therapist', 'Student', 'student',
+                   'Partner @Orion', 'Founder', 'Student', 'COO at Tender.co', 'Entrepreneur']
 
-# nivel satisfacao curriculum
-# perfil das pessoas que fazem mais reviews (nivel de review/curso)
-#
-
-
-# CYBERSEC
-
-#calendar=['janeiro', 'fevereiro', "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
-
-# def month(row):
-#    for element in calendar:
-#        if element in row:
-#            return calendar.index(element)+1
-
-#df1["Month"] = df1["DIM CALENDAR.DATE.1"].apply(month)
+    for element in jobTitle_WD:
+        if element in row:
+            return 0
+        else:
+            return 1
 
 
-# comments2[(comments2['school']=='ironhack')&((comments2['program']=='UX/UI Design Bootcamp')|(comments2['program']=='UX/UI Design Part-Time')))]['jobTitle'].unique()
+def jobTitle_CS_clean(row):
+    """This method normalizes the job title for CyberSec cohort"""
+    jobTitle_CS = ['analyst']
+    for element in jobTitle_CS:
+        if (element in row):
+            return 1
+        else:
+            return 0
