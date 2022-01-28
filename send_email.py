@@ -8,7 +8,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 sender_email = "bnbmuniz@gmail.com"
-receiver_email = "gjpcalvinho@gmail.com"  # "jose.pereira@ironhack.com",
+receiver_email = "jose.pereira@ironhack.com"
 password = "Paraisonice2016"
 
 
@@ -29,7 +29,7 @@ message["Bcc"] = receiver_email  # Recommended for mass emails
 # Add body to email
 message.attach(MIMEText(body, "plain"))
 
-filename = "/Users/calvinho/IRONHACK/w2/project/sql_project/workbook.xlsx"
+filename = "report.xlsx"
 # filename = "workbook.xlsx"  # In same directory as script
 
 # Open PDF file in binary mode
