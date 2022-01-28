@@ -40,21 +40,21 @@ def price_program(row):
 def duration_program(row):
     """This method sets the correct duration of every cohort"""
     if row['program'] == 'UX/UI Design Bootcamp':
-        return '9 months'
+        return '9 weeks'
     elif row['program'] == 'Cyber Security Bootcamp':
-        return '12 months'
+        return '12 weeks'
     elif row['program'] == 'Data Analytics Bootcamp':
-        return '9 months'
+        return '9 weeks'
     elif row['program'] == 'Web Development Bootcamp':
-        return '9 months'
+        return '9 weeks'
     elif row['program'] == 'UX/UI Design Part-Time':
-        return '24 months'
+        return '24 weeks'
     elif row['program'] == 'Cyber Security Part-Time':
         return '-'
     elif row['program'] == 'Data Analytics Part-Time':
-        return '24 months'
+        return '24 weeks'
     elif row['program'] == 'Web Development Part-Time':
-        return '24 months'
+        return '24 weeks'
     else:
         return 'check duration'
 

@@ -2,8 +2,9 @@ import os
 import pandas as pd
 import mysql.connector
 from sqlalchemy import create_engine, text
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
+
+#import matplotlib.pyplot as plt
+#from matplotlib.backends.backend_pdf import PdfPages
 # Import our modules
 import database as db
 import datacleaning as dc
@@ -15,7 +16,6 @@ locations_values = []
 school_values = []
 comments_values = []
 
-plt.close("all")
 
 # Fetch mySQL password from env variable
 sql_pass = os.environ["MYSQL_PASSWORD"]
@@ -77,7 +77,7 @@ try:
     # Data Cleaning
     comments_df['program'] = comments_df.apply(dc.program_clean, axis=1)
     comments_df['price'] = comments_df.apply(dc.price_program, axis=1)
-    comments_df['duration'] = comments_df.apply(dc.price_program, axis=1)
+    comments_df['duration'] = comments_df.apply(dc.duration_program, axis=1)
     comments_df['Work_inField'] = comments_df['jobTitle'].apply(
         dc.jobTitle_DA_clean)
     comments_df['Work_inField'] = comments_df['jobTitle'].apply(
